@@ -1,18 +1,46 @@
 #include <Arduino.h>
+#include "movement.h"
 
-// put function declarations here:
-int myFunction(int, int);
+
+Movement sphere;
+
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  sphere.setUpStepper(S_PIN1, S_PIN2, MAXSPEED, ACCEL);
+  sphere.setUpLimitSwitches(UPPER_LIMIT_PIN, LOWER_LIMIT_PIN);
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  //debugging//
+  //sphere.debug();
+  //sphere.printAmage();
+
+  //check for inputs and porblems
+  sphere.checkLimits(UPPER_LIMIT_PIN,LOWER_LIMIT_PIN);
+
+
+
+  //outputs
+  sphere.homeIfRequired();
+  sphere.checkMoveToReady();
+  sphere.checkMoveToUpPosition();
+  sphere.checkMoveToDownPosition();
+  sphere.checkTopLimitMoveToTop();
+ 
+
+  //status update
+  sphere.checkIfMovementFinished();
+
+
+  //sphere.stressTest();
+
+  sphere.step();
+
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
+
+
+
+
